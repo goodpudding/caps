@@ -1,6 +1,22 @@
 'use strict';
 
-const { emitter, eventPool } = require('../eventPool.js');
+const Chance = require('chance');
+const chance = new Chance;
 
-emitter.emit(eventPool[0], { packageReadyForPickup: true });
+function generatePayload(){
+  return {
+    "store": chance.company(),
+    "orderId": chance.guid(),
+    "customer": chance.name(),
+    "address": chance.address()
+  }
+}
 
+function handleDelivered(payload){
+console.log(`Thank you, ${payload.customer}`);
+}
+
+module.exports = {
+  generatePayload,
+  handleDelivered,
+}

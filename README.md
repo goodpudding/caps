@@ -6,7 +6,7 @@ Short, one-liner description of your JavaScript application.
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
+1. [Desciption](#description)
 2. [Features](#features)
 3. [Prerequisites](#prerequisites)
 4. [Installation](#installation)
@@ -16,19 +16,19 @@ Short, one-liner description of your JavaScript application.
 8. [Contributing](#contributing)
 9. [License](#license)
 
-## Introduction
+## Description
 
-A more detailed explanation of your JavaScript application. Explain what it does, what problem it solves, and how it can be beneficial to potential users.
+This is a project called The Code Academy Parcel Service or CAPS. It is designed to act as a third party software between shops and deliver personel. When a shop has an order ready for delivery, they will generate a payload of information that the server distributes to the delivery personel. When the order is picked up and delivered, they store is notified.
 
 ## UML
 
-## Whiteboard
+![UML](Lab_11_UML.png)
 
 ## Features
 
-- Feature 1: A brief explanation of the feature.
-- Feature 2: A brief explanation of the feature.
-- Feature 3: A brief explanation of the feature.
+- Listener for 'pickup': allows to activate features when 'pickup' event occurs
+- Listener for 'in-transit': updates the store with status.
+- Listener for 'delivered': updates the store and generates a thank you note.
 
 ## Prerequisites
 
@@ -43,16 +43,21 @@ List any prerequisites required to use the application, such as:
 Step-by-step instructions on how to install the application, including code snippets:
 
 \`\`\`bash
-# Clone the repository
-git clone https://github.com/your-username/project-name.git
 
-# Change into the project directory
+## Clone the repository
+
+git clone <https://github.com/your-username/project-name.git>
+
+## Change into the project directory
+
 cd project-name
 
-# Install the dependencies
+## Install the dependencies
+
 npm install
 
-# Run the application in development mode
+## Run the application in development mode
+
 npm run dev
 \`\`\`
 
@@ -101,8 +106,11 @@ If your application has an API, provide documentation for each endpoint, includi
 Explain how to run tests for your application:
 
 \`\`\`bash
-# Run tests
-npm test
+
+## Run tests
+
+npm test driver-handler
+npm test vendor-handler
 \`\`\`
 
 ## Contributing

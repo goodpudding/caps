@@ -1,11 +1,15 @@
 'use strict';
 
-const { emitter, eventPool } = require('../eventPool');
+const eventEmitter = require('../eventPool');
 
-// this is just waiting for other body parts to emit events
-eventPool.forEach(event => {
-  emitter.on(event, (payload) => {
-    console.log('Package is ready for pickup', event, payload);
-    emitter.emit('Package_Ready', payload);
-  });
-});
+function handlePickup(payload){
+  console.log(`DRIVER: picked up ${payload.orderId}`);
+
+  eventEmitter.emit('in-transit', payload);
+
+  console.log(`DRIVER: delivered ${payload.orderId}`);
+
+  eventEmitter.emit('delivered', payload);
+}
+
+module.exports = handlePickup;
