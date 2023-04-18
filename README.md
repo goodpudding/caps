@@ -36,7 +36,8 @@ List any prerequisites required to use the application, such as:
 
 - Node.js (version 14.x.x or higher)
 - npm (version 6.x.x or higher)
-- Additional dependencies or system requirements
+- jest
+- chance
 
 ## Installation
 
@@ -46,7 +47,7 @@ Step-by-step instructions on how to install the application, including code snip
 
 ## Clone the repository
 
-git clone <https://github.com/your-username/project-name.git>
+git clone https://github.com/goodpudding/cap.git
 
 ## Change into the project directory
 
