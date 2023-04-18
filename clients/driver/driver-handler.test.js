@@ -1,7 +1,7 @@
 'use strict';
 
 const handlePickup = require('./handler');
-const eventEmitter = require('../eventPool');
+const eventEmitter = require('../../eventPool');
 
 jest.mock('../eventPool', () => ({
   on: jest.fn(),
