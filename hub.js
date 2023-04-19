@@ -16,5 +16,5 @@ eventEmitter.on("in-transit", logEvent('in-transit'));
 
 eventEmitter.on("delivered", logEvent('delivered'));
 
-require('./driver')
+require('./clients/driver')
 require("./vendor");
