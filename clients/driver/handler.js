@@ -1,17 +1,19 @@
-'use strict';
 
 const { io } = require('socket.io-client');
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
 let caps = io(SERVER_URL + '/caps');
 
-function handlePickup(payload){
-  console.log(`DRIVER: picked up ${payload.orderId}`);
+module.exports = {
+handlePickup: function (payload) {
+  caps.emit('join-group', payload["store"]);
+  console.log('joined room')
 
+  console.log(`DRIVER: picked up ${payload['orderId']} for ${payload['store']}`);
   caps.emit('in-transit', payload);
 
-  console.log(`DRIVER: delivered ${payload.orderId}`);
+  console.log(`Order ${payload['orderId']} in transit`);
 
   caps.emit('delivered', payload);
-}
 
-module.exports = handlePickup;
+}
+}
