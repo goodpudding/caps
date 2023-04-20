@@ -2,10 +2,10 @@
 
 const { io } = require('socket.io-client');
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001';
-let generalSocket = io(SERVER_URL);
+let caps = io(SERVER_URL + '/caps');
 
-const handlePickup = require('./handler');
+const { handlePickup } = require('./handler');
 
 
 
-generalSocket.on('pickup', handlePickup);
+caps.on('pickup', handlePickup);

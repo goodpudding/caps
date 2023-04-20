@@ -23,6 +23,7 @@ This is a project called The Code Academy Parcel Service or CAPS. It is designed
 ## UML
 
 ![UML](Lab_11_UML.png)
+![UML](Lab_12_UML.png)
 
 ## Features
 
