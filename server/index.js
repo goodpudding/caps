@@ -2,41 +2,51 @@
 
 const { Server } = require("socket.io");
 const PORT = process.env.PORT || 3001;
-
+const MessageQueue = require('../lib/MessageQueue');
 const io = new Server(PORT);
 
 let caps = io.of("/caps");
+
+let pickup = new MessageQueue();
+let delivered = new MessageQueue();
 
 function logEvent(eventName, payload) {
   console.log(
     `
   EVENT: {
     event: ${eventName};
-    time: ${new Date(Date.now()).toDateString()},
+    time: ${new Date().toDateString()},
     payload:`,
-    payload
+    payload,
+    "}"
   );
 }
 
-/* This code block is creating an event listener for the "connection" event on the "caps" namespace.
-When a client connects to the "caps" namespace, the callback function is executed with the "socket"
-object representing the client's connection. */
 caps.on("connection", (socket) => {
   console.log("Connect to nameSpace", socket.id);
 
- /* This code block is creating an event listener for the "join-group" event on the "caps" namespace.
- When a client emits a "join-group" event with a payload containing a "store" property, the callback
- function is executed with the "socket" object representing the client's connection. The function
- then joins the client to a room with the name of the "store" property in the payload, using the
- "socket.join()" method. Finally, it logs a message to the console indicating that the client has
- connected to the room. This allows the client to receive messages specific to that room, such as
- "in-transit" and "delivered" events for deliveries associated with that store. */
   socket.on("join-group", (payload) => {
     socket.join(payload["store"]);
-    console.log(`Connect to room, `, payload)
+    console.log(`Connect to room, `, payload);
   });
+
+  socket.on('pickupMessages', (payload) => {
+    let message = pickup.read(payload.store);
+    socket.emit('missedPickups', message);
+  });
+
+  socket.on('deliveredMessages', (payload) => {
+    let message = delivered.read(payload.store);
+    socket.emit('missedDeliveries', message);
+  });
+
   socket.on("pickup", (payload) => {
-    socket.broadcast.emit("pickup", payload);
+    const clientsInRoom = caps.adapter.rooms.get(payload.store);
+    if (!clientsInRoom || clientsInRoom.size === 0) {
+      pickup.store(payload.store, payload);
+    } else {
+      socket.broadcast.emit("pickup", payload);
+    }
     logEvent("pickup", payload);
   });
 
@@ -46,7 +56,16 @@ caps.on("connection", (socket) => {
   });
 
   socket.on("delivered", (payload) => {
-    socket.to(payload.store).emit("delivered", payload);
+    const clientsInRoom = caps.adapter.rooms.get(payload.store);
+    if (!clientsInRoom || clientsInRoom.size === 0) {
+      delivered.store(payload.store, payload);
+    } else {
+      socket.to(payload.store).emit("delivered", payload);
+    }
     logEvent("delivered", payload);
+  });
+
+  socket.on("error", (error) => {
+    console.error("An error occurred:", error);
   });
 });
